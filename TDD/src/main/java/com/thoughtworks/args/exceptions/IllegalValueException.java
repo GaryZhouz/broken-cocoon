@@ -1,6 +1,21 @@
 package com.thoughtworks.args.exceptions;
 
 public class IllegalValueException extends RuntimeException {
-    public IllegalValueException(String value, String value1) {
+
+    private String option;
+
+    private String value;
+
+    public IllegalValueException(String option, String value) {
+        this.option = option;
+        this.value = value;
+    }
+
+    public String getOption() {
+        return option;
+    }
+
+    public String getValue() {
+        return value;
     }
 }

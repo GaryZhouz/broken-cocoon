@@ -1,12 +1,10 @@
 package com.thoughtworks.args;
 
 import com.thoughtworks.args.exceptions.IllegalOptionException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -43,14 +41,13 @@ public class ArgsTest {
 
     // -g this is a list -d 1 2 -3 5
     @Test
-    @Disabled
     public void should_example_2() {
         ListOptions options = Args.parse(ListOptions.class, "-g", "this", "is", "a", "list", "-d", "1", "2", "-3", "5");
 
         assertArrayEquals(new String[]{"this", "is", "a", "list"}, options.group());
-        assertArrayEquals(new int[]{1, 2, -3, 5}, options.decimals());
+        assertArrayEquals(new Integer[]{1, 2, -3, 5}, options.decimals());
     }
 
-    static record ListOptions(@Option("g") String[] group, @Option("d") int[] decimals) {
+    static record ListOptions(@Option("g") String[] group, @Option("d") Integer[] decimals) {
     }
 }
