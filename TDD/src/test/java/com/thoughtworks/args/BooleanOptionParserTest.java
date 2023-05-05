@@ -1,5 +1,6 @@
 package com.thoughtworks.args;
 
+import com.thoughtworks.args.exceptions.TooManyArgumentsException;
 import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Annotation;

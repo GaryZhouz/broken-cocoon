@@ -1,4 +1,4 @@
-package com.thoughtworks.args;
+package com.thoughtworks.args.exceptions;
 
 public class InsufficientArgumentsException extends RuntimeException {
 
