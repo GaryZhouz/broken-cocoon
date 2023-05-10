@@ -51,6 +51,8 @@ public class StudentsTest {
     // save
     @Test
     public void should_save_student_to_db() {
+        int before = manager.createNativeQuery("select id, first_name, last_name, email from STUDENTS s").getResultList().size();
+
         // exercise
         manager.getTransaction().begin();
         Student saved = students.save(new Student("john", "smith", "john.smith@email.com"));
@@ -59,7 +61,7 @@ public class StudentsTest {
         // verify
         List resultList = manager.createNativeQuery("select id, first_name, last_name, email from STUDENTS s").getResultList();
 
-        assertEquals(1, resultList.size());
+        assertEquals(before + 1, resultList.size());
 
         Object[] john = (Object[]) resultList.get(0);
 
