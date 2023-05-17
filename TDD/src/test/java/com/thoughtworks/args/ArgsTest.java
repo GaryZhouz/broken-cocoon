@@ -2,11 +2,18 @@ package com.thoughtworks.args;
 
 import com.thoughtworks.args.exceptions.IllegalOptionException;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.mockito.internal.creation.MockSettingsImpl;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ArgsTest {
 
@@ -65,5 +72,24 @@ public class ArgsTest {
 
     // setup
     static record ListOptions(@Option("g") String[] group, @Option("d") Integer[] decimals) {
+    }
+
+    @Test
+    public void should_parse_options_if_option_parser_provided() {
+        OptionParser<Boolean> boolParser = mock(OptionParser.class);
+        OptionParser<Integer> intParser = mock(OptionParser.class);
+        OptionParser<String> stringParser = mock(OptionParser.class);
+
+        when(boolParser.parse(any(), any())).thenReturn(true);
+        when(intParser.parse(any(), any())).thenReturn(1000);
+        when(stringParser.parse(any(), any())).thenReturn("parsed");
+
+        Args<MultiOptions> args = new Args<>(MultiOptions.class, Map.of(boolean.class, boolParser, int.class, intParser, String.class, stringParser));
+
+        MultiOptions options = args.parse("-l", "-p", "8080", "-d", "/usr/logs");
+
+        assertTrue(true);
+        assertEquals(1000, options.port());
+        assertEquals("parsed", options.directory());
     }
 }
