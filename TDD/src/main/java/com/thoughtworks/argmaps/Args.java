@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class Args<T> {
     public static Map<String, String[]> toMap(String... args) {
@@ -35,15 +36,17 @@ public class Args<T> {
 
     private Class<T> optionClass;
     private Map<Class<?>, OptionParser> parsers;
+    private Function<String[], Map<String, String[]>> optionParser;
 
-    public Args(Class<T> optionClass, Map<Class<?>, OptionParser> parsers) {
+    public Args(Class<T> optionClass, Map<Class<?>, OptionParser> parsers, Function<String[], Map<String, String[]>> optionParser) {
         this.optionClass = optionClass;
         this.parsers = parsers;
+        this.optionParser = optionParser;
     }
 
     public T parse(String... args) {
         try {
-            Map<String, String[]> options = toMap(args);
+            Map<String, String[]> options = optionParser.apply(args);
             Constructor<?> constructor = optionClass.getDeclaredConstructors()[0];
 
             Object[] values = Arrays.stream(constructor.getParameters())

@@ -4,10 +4,13 @@ import com.thoughtworks.args.Option;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ArgsMapTest {
     // option without value, -b
@@ -59,7 +62,11 @@ public class ArgsMapTest {
 
     @Test
     public void should_parse_bool_option() {
-        Args<BoolOption> args = new Args<>(BoolOption.class, Map.of(boolean.class, ArgsMapTest::parseBool));
+        Function<String[], Map<String, String[]>> optionParser = mock(Function.class);
+
+        when(optionParser.apply(new String[]{"-l"})).thenReturn(Map.of("l", new String[0]));
+
+        Args<BoolOption> args = new Args<>(BoolOption.class, Map.of(boolean.class, ArgsMapTest::parseBool), optionParser);
 
         BoolOption option = args.parse("-l");
 
@@ -71,7 +78,11 @@ public class ArgsMapTest {
 
     @Test
     public void should_parse_int_option() {
-        Args<IntOption> args = new Args<>(IntOption.class, Map.of(int.class, ArgsMapTest::parseInt));
+        Function<String[], Map<String, String[]>> optionParser = mock(Function.class);
+
+        when(optionParser.apply(new String[]{"-p", "8080"})).thenReturn(Map.of("p", new String[]{"8080"}));
+
+        Args<IntOption> args = new Args<>(IntOption.class, Map.of(int.class, ArgsMapTest::parseInt), optionParser);
 
         IntOption option = args.parse("-p", "8080");
 
