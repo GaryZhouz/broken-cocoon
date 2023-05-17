@@ -1,11 +1,13 @@
 package com.thoughtworks.argmaps;
 
+import com.thoughtworks.args.Option;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ArgsMapTest {
     // option without value, -b
@@ -52,5 +54,46 @@ public class ArgsMapTest {
         assertEquals(2, args.size());
         assertArrayEquals(new String[]{"this", "is", "a", "list"}, args.get("g"));
         assertArrayEquals(new String[]{"1", "2", "-3", "5"}, args.get("d"));
+    }
+
+
+    @Test
+    public void should_parse_bool_option() {
+        Args<BoolOption> args = new Args<>(BoolOption.class, Map.of(boolean.class, ArgsMapTest::parseBool));
+
+        BoolOption option = args.parse("-l");
+
+        assertTrue(option.logging);
+    }
+
+    static record BoolOption(@Option("l") boolean logging) {
+    }
+
+    @Test
+    public void should_parse_int_option() {
+        Args<IntOption> args = new Args<>(IntOption.class, Map.of(int.class, ArgsMapTest::parseInt));
+
+        IntOption option = args.parse("-p", "8080");
+
+        assertEquals(8080, option.port);
+    }
+
+    static record IntOption(@Option("p") int port) {
+    }
+
+    private static boolean parseBool(String[] values) {
+        checkSize(values, 0);
+        return values != null;
+    }
+
+    private static int parseInt(String[] values) {
+        checkSize(values, 1);
+        return Integer.parseInt(values[0]);
+    }
+
+    private static void checkSize(String[] values, int size) {
+        if (values != null && values.length != size) {
+            throw new RuntimeException();
+        }
     }
 }
