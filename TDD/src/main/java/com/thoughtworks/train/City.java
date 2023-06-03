@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -47,6 +48,26 @@ public class City {
                         .map(city -> ArriveCity.from(city, 0))
                         .toList())
                 .build();
+    }
+
+    public String calculateDistanceByRoute(char... route) {
+        String noSuchRoute = "NO SUCH ROUTE";
+        City root = this;
+        Integer distance = 0;
+        for (char cityName : route) {
+            Optional<ArriveCity> needArriveCity = root.getCanArriveCities()
+                    .stream()
+                    .filter(arriveCity -> arriveCity.getCity()
+                            .getName()
+                            .contains(String.valueOf(cityName))
+                    ).findFirst();
+            if (needArriveCity.isEmpty()) {
+                return noSuchRoute;
+            }
+            distance += needArriveCity.get().getDistance();
+            root = needArriveCity.get().getCity();
+        }
+        return String.valueOf(distance);
     }
 
 }
