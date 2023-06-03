@@ -96,6 +96,19 @@ public class CityTest {
                 // then
                 assertNull(model);
             }
+
+            @ParameterizedTest
+            @ValueSource(strings = {"", "A", "A3", "B6"})
+            void should_return_null_when_given_shorter_than_3_length_args(String args) {
+                // given
+                List<String> input = Collections.singletonList(args);
+
+                // when
+                City model = City.generate(input);
+
+                // then
+                assertNull(model);
+            }
         }
     }
 
