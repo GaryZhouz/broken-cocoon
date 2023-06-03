@@ -34,6 +34,7 @@ public class CityTest {
 
                 // when
                 City model = City.generate(input);
+                assert model != null;
                 List<ArriveCity> arriveCities = model.getCanArriveCities();
                 City startCity = arriveCities.stream()
                         .filter(city -> startCityName.equals(city.getCity().getName()))
@@ -58,6 +59,7 @@ public class CityTest {
 
                 // when
                 City model = City.generate(input);
+                assert model != null;
                 Map<String, City> nameMapCity = model.getCanArriveCities()
                         .stream()
                         .map(ArriveCity::getCity)
@@ -112,4 +114,66 @@ public class CityTest {
         }
     }
 
+    @Nested
+    class calculateDistance {
+        @Nested
+        class HappyPath {
+            @ParameterizedTest
+            @ValueSource(strings = {"AD", "BC", "CD", "DC", "EB"})
+            void should_return_route_distance_when_given_two_length_route_can_arrive(String route) {
+                // given
+                City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                // when
+                assert city != null;
+                String distance = city.calculateDistanceByRoute(route.toCharArray());
+
+                // then
+                Map<String, String> validMap = Map.of(
+                        "AD", "5",
+                        "BC", "4",
+                        "CD", "8",
+                        "DC", "8",
+                        "EB", "3"
+                );
+                validMap.forEach((key, value) -> assertEquals(validMap.get(route), distance));
+            }
+
+            @ParameterizedTest
+            @ValueSource(strings = {"ABC", "ADC", "AEBCD"})
+            void should_return_route_distance_when_given_more_than_2_length_route_can_arrive(String route) {
+                // given
+                City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                // when
+                assert city != null;
+                String distance = city.calculateDistanceByRoute(route.toCharArray());
+
+                // then
+                Map<String, String> validMap = Map.of(
+                        "ABC", "9",
+                        "ADC", "13",
+                        "AEBCD", "22"
+                );
+                validMap.forEach((key, value) -> assertEquals(validMap.get(route), distance));
+            }
+        }
+
+        @Nested
+        class SadPath {
+            @ParameterizedTest
+            @ValueSource(strings = {"AC", "AED", "BDCD"})
+            void should_return_no_such_route_when_given_inaccessible_route(String route) {
+                // given
+                City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                // when
+                assert city != null;
+                String distance = city.calculateDistanceByRoute(route.toCharArray());
+
+                // then
+                assertEquals("NO SUCH ROUTE", distance);
+            }
+        }
+    }
 }
