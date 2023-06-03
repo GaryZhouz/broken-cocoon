@@ -24,10 +24,7 @@ public class City {
 
     public static City generate(List<String> input) {
         boolean validInput = input.stream()
-                .allMatch(param -> {
-                    String distance = param.substring(2);
-                    return distance.matches("^[0-9]+$");
-                });
+                .allMatch(param -> param.length() >= 3 && param.substring(2).matches("^[0-9]+$"));
         if (!validInput) {
             return null;
         }
