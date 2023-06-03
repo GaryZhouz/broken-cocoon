@@ -14,6 +14,8 @@ dependencies {
     implementation("jakarta.persistence:jakarta.persistence-api:2.2.2")
     implementation("org.hsqldb:hsqldb:2.7.1")
 
+    compileOnly("org.projectlombok:lombok:1.18.28")
+
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core:5.3.1")
