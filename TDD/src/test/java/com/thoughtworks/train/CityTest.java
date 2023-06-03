@@ -13,6 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CityTest {
@@ -81,6 +82,21 @@ public class CityTest {
             }
         }
 
+        @Nested
+        class SadPath {
+            @ParameterizedTest
+            @ValueSource(strings = {"ABA", "BCC", "CDA", "DCD"})
+            void should_return_null_when_given_distance_is_not_number(String args) {
+                // given
+                List<String> input = Collections.singletonList(args);
+
+                // when
+                City model = City.generate(input);
+
+                // then
+                assertNull(model);
+            }
+        }
     }
 
 }
