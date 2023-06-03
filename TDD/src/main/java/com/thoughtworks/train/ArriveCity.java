@@ -16,4 +16,11 @@ public class ArriveCity {
     private ArriveCity() {
     }
 
+    public static ArriveCity from(City city, Integer distance) {
+        return ArriveCity.builder()
+                .city(city)
+                .distance(distance)
+                .build();
+    }
+
 }
