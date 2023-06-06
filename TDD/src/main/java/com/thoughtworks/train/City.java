@@ -70,4 +70,8 @@ public class City {
         return String.valueOf(distance);
     }
 
+    public List<String> calculateRoutes(String start, String arrival) {
+        return null;
+    }
+
 }

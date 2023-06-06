@@ -176,4 +176,58 @@ public class CityTest {
             }
         }
     }
+
+    @Nested
+    class calculateRoutes {
+        @Nested
+        class IgnoreCircle {
+            @Nested
+            class HappyPath {
+                @ParameterizedTest
+                @ValueSource(strings = {"AC", "AE", "AD", "DB", "DE", "DC"})
+                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived(String args) {
+                    // given
+                    String start = args.substring(0, 1);
+                    String arrived = args.substring(1, 2);
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    List<String> allRoutes = city.calculateRoutes(start, arrived);
+                    System.out.println(args + " -> " + allRoutes);
+
+                    // then
+                    Map<String, List<String>> validMap = Map.of(
+                            "AC", List.of("ABC", "ADC", "ADEBC", "AEBC"),
+                            "AE", List.of("AE", "ABCE", "ABCDE", "ADE", "ADCE"),
+                            "AD", List.of("AD", "ABCD", "AEBCD"),
+                            "DB", List.of("DCEB", "DEB"),
+                            "DE", List.of("DE", "DCE"),
+                            "DC", List.of("DC", "DEBC")
+                    );
+                    assertTrue(allRoutes.containsAll(validMap.get(args)));
+                }
+            }
+
+            @Nested
+            class SadPath {
+                @ParameterizedTest
+                @ValueSource(strings = {"BA", "DA", "EA", "ZZ"})
+                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived(String args) {
+                    // given
+                    String start = args.substring(0, 1);
+                    String arrived = args.substring(1, 2);
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    List<String> allRoutes = city.calculateRoutes(start, arrived);
+                    System.out.println(args + " -> " + allRoutes);
+
+                    // then
+                    assertTrue(allRoutes.isEmpty());
+                }
+            }
+        }
+    }
 }
