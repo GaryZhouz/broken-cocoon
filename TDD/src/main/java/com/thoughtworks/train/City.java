@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Data
 @Builder
@@ -72,6 +73,10 @@ public class City {
     }
 
     public List<String> calculateRoutes(String start, String arrival) {
+        return this.calculateRoutes(start, arrival, true, (ignore) -> true);
+    }
+
+    public List<String> calculateRoutes(String start, String arrival, boolean ignoreCircle, Predicate<Provider> predicate) {
         List<String> routes = new ArrayList<>();
         List<City> path = new ArrayList<>();
         Optional<ArriveCity> startCity = this.getCanArriveCities().stream()
@@ -83,19 +88,28 @@ public class City {
         if (startCity.isEmpty()) {
             return Collections.emptyList();
         }
-        dfsCity(startCity.get().getCity(), arrival, routes, path);
+        dfsCity(startCity.get().getCity(), arrival, routes, path, ignoreCircle, predicate);
         return routes;
     }
 
     /**
      * 忽略环的情况下 计算所有的路线
      *
-     * @param curCity 初始城市节点
-     * @param arrival 需要到达城市节点名称
-     * @param routes  所有的路线集合
-     * @param path    记录当前路线的集合
+     * @param curCity          初始城市节点
+     * @param arrival          需要到达城市节点名称
+     * @param routes           所有的路线集合
+     * @param path             记录当前路线的集合
+     * @param ignoreCircle     是否忽略环
+     * @param exitRecPredicate 退出的条件之一
      */
-    private void dfsCity(City curCity, String arrival, List<String> routes, List<City> path) {
+    public void dfsCity(
+            City curCity,
+            String arrival,
+            List<String> routes,
+            List<City> path,
+            boolean ignoreCircle,
+            Predicate<Provider> exitRecPredicate
+    ) {
         path.add(curCity);
         if (curCity.getName().equals(arrival)) {
             routes.add(path.stream()
@@ -106,7 +120,7 @@ public class City {
         for (ArriveCity canArriveCity : arriveCities) {
             City nextCity = canArriveCity.getCity();
             if (path.stream().noneMatch(arrivedCity -> arrivedCity.getName().equals(nextCity.getName()))) {
-                dfsCity(nextCity, arrival, routes, path);
+                dfsCity(nextCity, arrival, routes, path, ignoreCircle, exitRecPredicate);
                 if (path.size() > 0) {
                     path.remove(path.size() - 1);
                 }

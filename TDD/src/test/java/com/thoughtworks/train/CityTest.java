@@ -229,5 +229,52 @@ public class CityTest {
                 }
             }
         }
+
+        @Nested
+        class IncludeCircle {
+            @Nested
+            class HappyPath {
+                @ParameterizedTest
+                @ValueSource(strings = {"AC", "CC"})
+                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived(String args) {
+                    // given
+                    String start = args.substring(0, 1);
+                    String arrived = args.substring(1, 2);
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getDistance() < 30);
+                    System.out.println(args + " -> " + allRoutes);
+
+                    // then
+                    Map<String, List<String>> validMap = Map.of(
+                            "AC", List.of("ABC", "ABCDC", "ABCEBC", "ABCEBCEBC", "ADC", "ADCDC", "ADCEBC", "ADEBC", "ADEBCEBC", "AEBC", "AEBCEBC"),
+                            "CC", List.of("CDC", "CDCEBC", "CDEBC", "CEBC", "CEBCDC", "CEBCEBC", "CEBCEBCEBC")
+                    );
+                    assertTrue(allRoutes.containsAll(validMap.get(args)));
+                }
+            }
+
+            @Nested
+            class SadPath {
+                @ParameterizedTest
+                @ValueSource(strings = {"BA", "DA", "EA", "ZZ"})
+                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived(String args) {
+                    // given
+                    String start = args.substring(0, 1);
+                    String arrived = args.substring(1, 2);
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getDistance() < 30);
+                    System.out.println(args + " -> " + allRoutes);
+
+                    // then
+                    assertTrue(allRoutes.isEmpty());
+                }
+            }
+        }
     }
 }
