@@ -88,8 +88,17 @@ public class City {
         if (startCity.isEmpty()) {
             return Collections.emptyList();
         }
-        dfsCity(startCity.get().getCity(), arrival, routes, path, ignoreCircle, predicate);
-        return routes;
+        dfsCity(
+                startCity.get().getCity(),
+                arrival,
+                routes,
+                path,
+                ignoreCircle,
+                predicate
+        );
+        return routes.stream()
+                .filter(route -> route.length() > 1)
+                .toList();
     }
 
     /**
@@ -111,21 +120,45 @@ public class City {
             Predicate<Provider> exitRecPredicate
     ) {
         path.add(curCity);
-        if (curCity.getName().equals(arrival)) {
+        if (curCity.getName().equals(arrival) && (ignoreCircle || exitRecPredicate.test(computedRouteDistance(path)))) {
             routes.add(path.stream()
                     .map(City::getName)
                     .reduce("", (x, y) -> x + y));
+            System.out.println(path.stream()
+                    .map(City::getName)
+                    .reduce("", (x, y) -> x + y));
+        } else if (!ignoreCircle && !exitRecPredicate.test(computedRouteDistance(path))) {
+            // 不忽略环的情况需要考虑其他限制条件 如距离或者其他限制条件不通过则直接return 否则会StackOverflow
+            return;
         }
         List<ArriveCity> arriveCities = curCity.getCanArriveCities();
-        for (ArriveCity canArriveCity : arriveCities) {
-            City nextCity = canArriveCity.getCity();
-            if (path.stream().noneMatch(arrivedCity -> arrivedCity.getName().equals(nextCity.getName()))) {
+        for (ArriveCity arriveCity : arriveCities) {
+            City nextCity = arriveCity.getCity();
+            if (!ignoreCircle || path.stream()
+                    .noneMatch(arrivedCity -> arrivedCity.getName().equals(nextCity.getName()))
+            ) {
                 dfsCity(nextCity, arrival, routes, path, ignoreCircle, exitRecPredicate);
                 if (path.size() > 0) {
                     path.remove(path.size() - 1);
                 }
             }
         }
+    }
+
+    private Provider computedRouteDistance(List<City> cities) {
+        int distance = 0;
+        for (int i = 1; i < cities.size(); i++) {
+            City prev = cities.get(i - 1);
+            City cur = cities.get(i);
+            distance += prev.getCanArriveCities()
+                    .stream()
+                    .filter(arriveCity -> cur.getName().equals(arriveCity.getCity().getName()))
+                    .findFirst().orElse(ArriveCity.builder().distance(0).build())
+                    .getDistance();
+        }
+        return Provider.builder()
+                .distance(distance)
+                .build();
     }
 
 }
