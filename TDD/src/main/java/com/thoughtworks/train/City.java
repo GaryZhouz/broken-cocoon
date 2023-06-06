@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,46 @@ public class City {
     }
 
     public List<String> calculateRoutes(String start, String arrival) {
-        return null;
+        List<String> routes = new ArrayList<>();
+        List<City> path = new ArrayList<>();
+        Optional<ArriveCity> startCity = this.getCanArriveCities().stream()
+                .filter(arriveCity -> arriveCity
+                        .getCity()
+                        .getName()
+                        .equals(start)
+                ).findFirst();
+        if (startCity.isEmpty()) {
+            return Collections.emptyList();
+        }
+        dfsCity(startCity.get().getCity(), arrival, routes, path);
+        return routes;
+    }
+
+    /**
+     * 忽略环的情况下 计算所有的路线
+     *
+     * @param curCity 初始城市节点
+     * @param arrival 需要到达城市节点名称
+     * @param routes  所有的路线集合
+     * @param path    记录当前路线的集合
+     */
+    private void dfsCity(City curCity, String arrival, List<String> routes, List<City> path) {
+        path.add(curCity);
+        if (curCity.getName().equals(arrival)) {
+            routes.add(path.stream()
+                    .map(City::getName)
+                    .reduce("", (x, y) -> x + y));
+        }
+        List<ArriveCity> arriveCities = curCity.getCanArriveCities();
+        for (ArriveCity canArriveCity : arriveCities) {
+            City nextCity = canArriveCity.getCity();
+            if (path.stream().noneMatch(arrivedCity -> arrivedCity.getName().equals(nextCity.getName()))) {
+                dfsCity(nextCity, arrival, routes, path);
+                if (path.size() > 0) {
+                    path.remove(path.size() - 1);
+                }
+            }
+        }
     }
 
 }
