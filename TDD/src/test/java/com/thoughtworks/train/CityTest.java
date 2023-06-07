@@ -281,22 +281,27 @@ public class CityTest {
                 }
 
                 // Q7
-                @Test
-                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_equals_steps() {
+                @ParameterizedTest
+                @ValueSource(strings = {"AC", "AD", "BB"})
+                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_equals_steps(String args) {
                     // given
-                    String args = "AC";
                     String start = args.substring(0, 1);
                     String arrived = args.substring(1, 2);
                     City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
 
                     // when
                     assert city != null;
-                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getSteps() == 4);
+                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getSteps() <= 4)
+                            .stream()
+                            .filter(route -> route.length() == 5)
+                            .toList();
                     System.out.println(args + " -> " + allRoutes);
 
                     // then
                     Map<String, List<String>> validMap = Map.of(
-                            "AC", List.of("ABCDC", "ADCDC", "ADEBC")
+                            "AC", List.of("ABCDC", "ADCDC", "ADEBC"),
+                            "AD", List.of("AEBCD"),
+                            "BB", List.of("BCDEB")
                     );
                     assertTrue(allRoutes.containsAll(validMap.get(args)));
                 }
