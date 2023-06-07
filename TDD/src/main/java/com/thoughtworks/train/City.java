@@ -120,14 +120,14 @@ public class City {
             Predicate<Provider> exitRecPredicate
     ) {
         path.add(curCity);
-        if (curCity.getName().equals(arrival) && (ignoreCircle || exitRecPredicate.test(computedRouteDistance(path)))) {
+        if (curCity.getName().equals(arrival) && (ignoreCircle || exitRecPredicate.test(computedRouteProvider(path)))) {
             routes.add(path.stream()
                     .map(City::getName)
                     .reduce("", (x, y) -> x + y));
             System.out.println(path.stream()
                     .map(City::getName)
                     .reduce("", (x, y) -> x + y));
-        } else if (!ignoreCircle && !exitRecPredicate.test(computedRouteDistance(path))) {
+        } else if (!ignoreCircle && !exitRecPredicate.test(computedRouteProvider(path))) {
             // 不忽略环的情况需要考虑其他限制条件 如距离或者其他限制条件不通过则直接return 否则会StackOverflow
             return;
         }
@@ -145,7 +145,7 @@ public class City {
         }
     }
 
-    private Provider computedRouteDistance(List<City> cities) {
+    private Provider computedRouteProvider(List<City> cities) {
         int distance = 0;
         for (int i = 1; i < cities.size(); i++) {
             City prev = cities.get(i - 1);
@@ -158,6 +158,7 @@ public class City {
         }
         return Provider.builder()
                 .distance(distance)
+                .steps(cities.size() - 1)
                 .build();
     }
 
