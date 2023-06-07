@@ -115,80 +115,230 @@ public class CityTest {
     }
 
     @Nested
-    class CalculateDistance {
+    class Part01{
         @Nested
-        class HappyPath {
-            // Q1
-            @ParameterizedTest
-            @ValueSource(strings = {"AD", "BC", "CD", "DC", "EB"})
-            void should_return_route_distance_when_given_two_length_route_can_arrive(String route) {
-                // given
-                City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
-
-                // when
-                assert city != null;
-                String distance = city.calculateDistanceByRoute(route.toCharArray());
-
-                // then
-                Map<String, String> validMap = Map.of(
-                        "AD", "5",
-                        "BC", "4",
-                        "CD", "8",
-                        "DC", "8",
-                        "EB", "3"
-                );
-                validMap.forEach((key, value) -> assertEquals(validMap.get(route), distance));
-            }
-
-            // Q1 Q3 Q4
-            @ParameterizedTest
-            @ValueSource(strings = {"ABC", "ADC", "AEBCD"})
-            void should_return_route_distance_when_given_more_than_2_length_route_can_arrive(String route) {
-                // given
-                City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
-
-                // when
-                assert city != null;
-                String distance = city.calculateDistanceByRoute(route.toCharArray());
-
-                // then
-                Map<String, String> validMap = Map.of(
-                        "ABC", "9",
-                        "ADC", "13",
-                        "AEBCD", "22"
-                );
-                validMap.forEach((key, value) -> assertEquals(validMap.get(route), distance));
-            }
-        }
-
-        @Nested
-        class SadPath {
-            // Q5
-            @ParameterizedTest
-            @ValueSource(strings = {"AC", "AED", "BDCD"})
-            void should_return_no_such_route_when_given_inaccessible_route(String route) {
-                // given
-                City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
-
-                // when
-                assert city != null;
-                String distance = city.calculateDistanceByRoute(route.toCharArray());
-
-                // then
-                assertEquals("NO SUCH ROUTE", distance);
-            }
-        }
-    }
-
-    @Nested
-    class CalculateRoutes {
-        @Nested
-        class IgnoreCircle {
+        class CalculateDistance {
             @Nested
             class HappyPath {
+                // Q1
                 @ParameterizedTest
-                @ValueSource(strings = {"AC", "AE", "AD", "DB", "DE", "DC"})
-                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived(String args) {
+                @ValueSource(strings = {"AD", "BC", "CD", "DC", "EB"})
+                void should_return_route_distance_when_given_two_length_route_can_arrive(String route) {
+                    // given
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    String distance = city.calculateDistanceByRoute(route.toCharArray());
+
+                    // then
+                    Map<String, String> validMap = Map.of(
+                            "AD", "5",
+                            "BC", "4",
+                            "CD", "8",
+                            "DC", "8",
+                            "EB", "3"
+                    );
+                    validMap.forEach((key, value) -> assertEquals(validMap.get(route), distance));
+                }
+
+                // Q1 Q3 Q4
+                @ParameterizedTest
+                @ValueSource(strings = {"ABC", "ADC", "AEBCD"})
+                void should_return_route_distance_when_given_more_than_2_length_route_can_arrive(String route) {
+                    // given
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    String distance = city.calculateDistanceByRoute(route.toCharArray());
+
+                    // then
+                    Map<String, String> validMap = Map.of(
+                            "ABC", "9",
+                            "ADC", "13",
+                            "AEBCD", "22"
+                    );
+                    validMap.forEach((key, value) -> assertEquals(validMap.get(route), distance));
+                }
+            }
+
+            @Nested
+            class SadPath {
+                // Q5
+                @ParameterizedTest
+                @ValueSource(strings = {"AC", "AED", "BDCD"})
+                void should_return_no_such_route_when_given_inaccessible_route(String route) {
+                    // given
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    String distance = city.calculateDistanceByRoute(route.toCharArray());
+
+                    // then
+                    assertEquals("NO SUCH ROUTE", distance);
+                }
+            }
+        }
+
+        @Nested
+        class CalculateRoutes {
+            @Nested
+            class IgnoreCircle {
+                @Nested
+                class HappyPath {
+                    @ParameterizedTest
+                    @ValueSource(strings = {"AC", "AE", "AD", "DB", "DE", "DC"})
+                    void should_return_all_routes_when_given_start_arrive_station_can_be_arrived(String args) {
+                        // given
+                        String start = args.substring(0, 1);
+                        String arrived = args.substring(1, 2);
+                        City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                        // when
+                        assert city != null;
+                        List<String> allRoutes = city.calculateRoutes(start, arrived);
+                        System.out.println(args + " -> " + allRoutes);
+
+                        // then
+                        Map<String, List<String>> validMap = Map.of(
+                                "AC", List.of("ABC", "ADC", "ADEBC", "AEBC"),
+                                "AE", List.of("AE", "ABCE", "ABCDE", "ADE", "ADCE"),
+                                "AD", List.of("AD", "ABCD", "AEBCD"),
+                                "DB", List.of("DCEB", "DEB"),
+                                "DE", List.of("DE", "DCE"),
+                                "DC", List.of("DC", "DEBC")
+                        );
+                        assertTrue(allRoutes.containsAll(validMap.get(args)));
+                    }
+                }
+
+                @Nested
+                class SadPath {
+                    @ParameterizedTest
+                    @ValueSource(strings = {"BA", "DA", "EA", "ZZ"})
+                    void should_return_all_routes_when_given_start_arrive_station_can_be_arrived(String args) {
+                        // given
+                        String start = args.substring(0, 1);
+                        String arrived = args.substring(1, 2);
+                        City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                        // when
+                        assert city != null;
+                        List<String> allRoutes = city.calculateRoutes(start, arrived);
+                        System.out.println(args + " -> " + allRoutes);
+
+                        // then
+                        assertTrue(allRoutes.isEmpty());
+                    }
+                }
+            }
+
+            @Nested
+            class IncludeCircle {
+                @Nested
+                class HappyPath {
+                    // Q10
+                    @ParameterizedTest
+                    @ValueSource(strings = {"AC", "CC"})
+                    void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_limit_max_distance(String args) {
+                        // given
+                        String start = args.substring(0, 1);
+                        String arrived = args.substring(1, 2);
+                        City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                        // when
+                        assert city != null;
+                        List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getDistance() < 30);
+                        System.out.println(args + " -> " + allRoutes);
+
+                        // then
+                        Map<String, List<String>> validMap = Map.of(
+                                "AC", List.of("ABC", "ABCDC", "ABCEBC", "ABCEBCEBC", "ADC", "ADCDC", "ADCEBC", "ADEBC", "ADEBCEBC", "AEBC", "AEBCEBC"),
+                                "CC", List.of("CDC", "CDCEBC", "CDEBC", "CEBC", "CEBCDC", "CEBCEBC", "CEBCEBCEBC")
+                        );
+                        assertTrue(allRoutes.containsAll(validMap.get(args)));
+                    }
+
+                    // Q6
+                    @Test
+                    void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_limit_max_steps() {
+                        // given
+                        String args = "CC";
+                        String start = args.substring(0, 1);
+                        String arrived = args.substring(1, 2);
+                        City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                        // when
+                        assert city != null;
+                        List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getSteps() <= 3);
+                        System.out.println(args + " -> " + allRoutes);
+
+                        // then
+                        Map<String, List<String>> validMap = Map.of(
+                                "CC", List.of("CDC", "CEBC")
+                        );
+                        assertTrue(allRoutes.containsAll(validMap.get(args)));
+                    }
+
+                    // Q7
+                    @ParameterizedTest
+                    @ValueSource(strings = {"AC", "AD", "BB"})
+                    void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_equals_steps(String args) {
+                        // given
+                        String start = args.substring(0, 1);
+                        String arrived = args.substring(1, 2);
+                        City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                        // when
+                        assert city != null;
+                        List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getSteps() <= 4)
+                                .stream()
+                                .filter(route -> route.length() == 5)
+                                .toList();
+                        System.out.println(args + " -> " + allRoutes);
+
+                        // then
+                        Map<String, List<String>> validMap = Map.of(
+                                "AC", List.of("ABCDC", "ADCDC", "ADEBC"),
+                                "AD", List.of("AEBCD"),
+                                "BB", List.of("BCDEB")
+                        );
+                        assertTrue(allRoutes.containsAll(validMap.get(args)));
+                    }
+                }
+
+                @Nested
+                class SadPath {
+                    @ParameterizedTest
+                    @ValueSource(strings = {"BA", "DA", "EA", "ZZ"})
+                    void should_return_all_routes_when_given_start_arrive_station_can_not_be_arrived(String args) {
+                        // given
+                        String start = args.substring(0, 1);
+                        String arrived = args.substring(1, 2);
+                        City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                        // when
+                        assert city != null;
+                        List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getDistance() < 30);
+                        System.out.println(args + " -> " + allRoutes);
+
+                        // then
+                        assertTrue(allRoutes.isEmpty());
+                    }
+                }
+            }
+        }
+
+        @Nested
+        class CalculateShortestRouteDistance {
+            @Nested
+            class HappyPath {
+                // Q8-9
+                @ParameterizedTest
+                @ValueSource(strings = {"AC", "BB"})
+                void should_return_shortest_distance_when_given_start_end_city_can_be_arrived(String args) {
                     // given
                     String start = args.substring(0, 1);
                     String arrived = args.substring(1, 2);
@@ -196,27 +346,22 @@ public class CityTest {
 
                     // when
                     assert city != null;
-                    List<String> allRoutes = city.calculateRoutes(start, arrived);
-                    System.out.println(args + " -> " + allRoutes);
+                    String shortestDistance = city.calculateShortestRoute(start, arrived, 30);
 
                     // then
-                    Map<String, List<String>> validMap = Map.of(
-                            "AC", List.of("ABC", "ADC", "ADEBC", "AEBC"),
-                            "AE", List.of("AE", "ABCE", "ABCDE", "ADE", "ADCE"),
-                            "AD", List.of("AD", "ABCD", "AEBCD"),
-                            "DB", List.of("DCEB", "DEB"),
-                            "DE", List.of("DE", "DCE"),
-                            "DC", List.of("DC", "DEBC")
+                    Map<String, String> validMap = Map.of(
+                            "AC", "9",
+                            "BB", "9"
                     );
-                    assertTrue(allRoutes.containsAll(validMap.get(args)));
+                    assertEquals(validMap.get(args), shortestDistance);
                 }
             }
 
             @Nested
             class SadPath {
                 @ParameterizedTest
-                @ValueSource(strings = {"BA", "DA", "EA", "ZZ"})
-                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived(String args) {
+                @ValueSource(strings = {"AA", "ZZ"})
+                void should_return_no_such_route_when_given_start_end_city_can_not_be_arrived(String args) {
                     // given
                     String start = args.substring(0, 1);
                     String arrived = args.substring(1, 2);
@@ -224,153 +369,11 @@ public class CityTest {
 
                     // when
                     assert city != null;
-                    List<String> allRoutes = city.calculateRoutes(start, arrived);
-                    System.out.println(args + " -> " + allRoutes);
+                    String shortestDistance = city.calculateShortestRoute(start, arrived, 30);
 
                     // then
-                    assertTrue(allRoutes.isEmpty());
+                    assertEquals("NO SUCH ROUTE", shortestDistance);
                 }
-            }
-        }
-
-        @Nested
-        class IncludeCircle {
-            @Nested
-            class HappyPath {
-                // Q10
-                @ParameterizedTest
-                @ValueSource(strings = {"AC", "CC"})
-                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_limit_max_distance(String args) {
-                    // given
-                    String start = args.substring(0, 1);
-                    String arrived = args.substring(1, 2);
-                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
-
-                    // when
-                    assert city != null;
-                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getDistance() < 30);
-                    System.out.println(args + " -> " + allRoutes);
-
-                    // then
-                    Map<String, List<String>> validMap = Map.of(
-                            "AC", List.of("ABC", "ABCDC", "ABCEBC", "ABCEBCEBC", "ADC", "ADCDC", "ADCEBC", "ADEBC", "ADEBCEBC", "AEBC", "AEBCEBC"),
-                            "CC", List.of("CDC", "CDCEBC", "CDEBC", "CEBC", "CEBCDC", "CEBCEBC", "CEBCEBCEBC")
-                    );
-                    assertTrue(allRoutes.containsAll(validMap.get(args)));
-                }
-
-                // Q6
-                @Test
-                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_limit_max_steps() {
-                    // given
-                    String args = "CC";
-                    String start = args.substring(0, 1);
-                    String arrived = args.substring(1, 2);
-                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
-
-                    // when
-                    assert city != null;
-                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getSteps() <= 3);
-                    System.out.println(args + " -> " + allRoutes);
-
-                    // then
-                    Map<String, List<String>> validMap = Map.of(
-                            "CC", List.of("CDC", "CEBC")
-                    );
-                    assertTrue(allRoutes.containsAll(validMap.get(args)));
-                }
-
-                // Q7
-                @ParameterizedTest
-                @ValueSource(strings = {"AC", "AD", "BB"})
-                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_equals_steps(String args) {
-                    // given
-                    String start = args.substring(0, 1);
-                    String arrived = args.substring(1, 2);
-                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
-
-                    // when
-                    assert city != null;
-                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getSteps() <= 4)
-                            .stream()
-                            .filter(route -> route.length() == 5)
-                            .toList();
-                    System.out.println(args + " -> " + allRoutes);
-
-                    // then
-                    Map<String, List<String>> validMap = Map.of(
-                            "AC", List.of("ABCDC", "ADCDC", "ADEBC"),
-                            "AD", List.of("AEBCD"),
-                            "BB", List.of("BCDEB")
-                    );
-                    assertTrue(allRoutes.containsAll(validMap.get(args)));
-                }
-            }
-
-            @Nested
-            class SadPath {
-                @ParameterizedTest
-                @ValueSource(strings = {"BA", "DA", "EA", "ZZ"})
-                void should_return_all_routes_when_given_start_arrive_station_can_not_be_arrived(String args) {
-                    // given
-                    String start = args.substring(0, 1);
-                    String arrived = args.substring(1, 2);
-                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
-
-                    // when
-                    assert city != null;
-                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getDistance() < 30);
-                    System.out.println(args + " -> " + allRoutes);
-
-                    // then
-                    assertTrue(allRoutes.isEmpty());
-                }
-            }
-        }
-    }
-
-    @Nested
-    class CalculateShortestRouteDistance {
-        @Nested
-        class HappyPath {
-            // Q8-9
-            @ParameterizedTest
-            @ValueSource(strings = {"AC", "BB"})
-            void should_return_shortest_distance_when_given_start_end_city_can_be_arrived(String args) {
-                // given
-                String start = args.substring(0, 1);
-                String arrived = args.substring(1, 2);
-                City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
-
-                // when
-                assert city != null;
-                String shortestDistance = city.calculateShortestRoute(start, arrived, 30);
-
-                // then
-                Map<String, String> validMap = Map.of(
-                        "AC", "9",
-                        "BB", "9"
-                );
-                assertEquals(validMap.get(args), shortestDistance);
-            }
-        }
-
-        @Nested
-        class SadPath {
-            @ParameterizedTest
-            @ValueSource(strings = {"AA", "ZZ"})
-            void should_return_no_such_route_when_given_start_end_city_can_not_be_arrived(String args) {
-                // given
-                String start = args.substring(0, 1);
-                String arrived = args.substring(1, 2);
-                City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
-
-                // when
-                assert city != null;
-                String shortestDistance = city.calculateShortestRoute(start, arrived, 30);
-
-                // then
-                assertEquals("NO SUCH ROUTE", shortestDistance);
             }
         }
     }
