@@ -118,6 +118,7 @@ public class CityTest {
     class calculateDistance {
         @Nested
         class HappyPath {
+            // Q1
             @ParameterizedTest
             @ValueSource(strings = {"AD", "BC", "CD", "DC", "EB"})
             void should_return_route_distance_when_given_two_length_route_can_arrive(String route) {
@@ -139,6 +140,7 @@ public class CityTest {
                 validMap.forEach((key, value) -> assertEquals(validMap.get(route), distance));
             }
 
+            // Q1 Q3 Q4
             @ParameterizedTest
             @ValueSource(strings = {"ABC", "ADC", "AEBCD"})
             void should_return_route_distance_when_given_more_than_2_length_route_can_arrive(String route) {
@@ -161,6 +163,7 @@ public class CityTest {
 
         @Nested
         class SadPath {
+            // Q5
             @ParameterizedTest
             @ValueSource(strings = {"AC", "AED", "BDCD"})
             void should_return_no_such_route_when_given_inaccessible_route(String route) {
@@ -234,9 +237,10 @@ public class CityTest {
         class IncludeCircle {
             @Nested
             class HappyPath {
+                // Q10
                 @ParameterizedTest
                 @ValueSource(strings = {"AC", "CC"})
-                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived(String args) {
+                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_limit_max_distance(String args) {
                     // given
                     String start = args.substring(0, 1);
                     String arrived = args.substring(1, 2);
@@ -260,7 +264,7 @@ public class CityTest {
             class SadPath {
                 @ParameterizedTest
                 @ValueSource(strings = {"BA", "DA", "EA", "ZZ"})
-                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived(String args) {
+                void should_return_all_routes_when_given_start_arrive_station_can_not_be_arrived(String args) {
                     // given
                     String start = args.substring(0, 1);
                     String arrived = args.substring(1, 2);
