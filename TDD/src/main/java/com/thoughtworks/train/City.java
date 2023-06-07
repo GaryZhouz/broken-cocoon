@@ -162,4 +162,16 @@ public class City {
                 .build();
     }
 
+    /**
+     * 计算最短距离
+     *
+     * @param start         起始站
+     * @param arrival       终点站
+     * @param limitDistance 起始站和终点站一样「环」，需要给出限制，否则会StackOverflow
+     * @return 最短距离
+     */
+    public String calculateShortestRoute(String start, String arrival, Integer limitDistance) {
+        return null;
+    }
+
 }

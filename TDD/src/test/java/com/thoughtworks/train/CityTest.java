@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CityTest {
 
     @Nested
-    class generateGraphModel {
+    class GenerateGraphModel {
 
         @Nested
         class HappyPath {
@@ -115,7 +115,7 @@ public class CityTest {
     }
 
     @Nested
-    class calculateDistance {
+    class CalculateDistance {
         @Nested
         class HappyPath {
             // Q1
@@ -181,7 +181,7 @@ public class CityTest {
     }
 
     @Nested
-    class calculateRoutes {
+    class CalculateRoutes {
         @Nested
         class IgnoreCircle {
             @Nested
@@ -325,6 +325,52 @@ public class CityTest {
                     // then
                     assertTrue(allRoutes.isEmpty());
                 }
+            }
+        }
+    }
+
+    @Nested
+    class CalculateShortestRouteDistance {
+        @Nested
+        class HappyPath {
+            // Q8-9
+            @ParameterizedTest
+            @ValueSource(strings = {"AC", "BB"})
+            void should_return_shortest_distance_when_given_start_end_city_can_be_arrived(String args) {
+                // given
+                String start = args.substring(0, 1);
+                String arrived = args.substring(1, 2);
+                City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                // when
+                assert city != null;
+                String shortestDistance = city.calculateShortestRoute(start, arrived, 30);
+
+                // then
+                Map<String, String> validMap = Map.of(
+                        "AC", "9",
+                        "BB", "9"
+                );
+                assertEquals(validMap.get(args), shortestDistance);
+            }
+        }
+
+        @Nested
+        class SadPath {
+            @ParameterizedTest
+            @ValueSource(strings = {"AA", "ZZ"})
+            void should_return_no_such_route_when_given_start_end_city_can_not_be_arrived(String args) {
+                // given
+                String start = args.substring(0, 1);
+                String arrived = args.substring(1, 2);
+                City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                // when
+                assert city != null;
+                String shortestDistance = city.calculateShortestRoute(start, arrived, 30);
+
+                // then
+                assertEquals("NO SUCH ROUTE", shortestDistance);
             }
         }
     }
