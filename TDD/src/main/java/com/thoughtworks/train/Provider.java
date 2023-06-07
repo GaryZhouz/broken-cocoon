@@ -7,6 +7,8 @@ import lombok.Data;
 @Builder
 public class Provider {
 
-    public Integer distance;
+    private Integer distance;
+
+    private Integer steps;
 
 }

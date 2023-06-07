@@ -258,6 +258,48 @@ public class CityTest {
                     );
                     assertTrue(allRoutes.containsAll(validMap.get(args)));
                 }
+
+                // Q6
+                @Test
+                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_limit_max_steps() {
+                    // given
+                    String args = "CC";
+                    String start = args.substring(0, 1);
+                    String arrived = args.substring(1, 2);
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getSteps() <= 3);
+                    System.out.println(args + " -> " + allRoutes);
+
+                    // then
+                    Map<String, List<String>> validMap = Map.of(
+                            "CC", List.of("CDC", "CEBC")
+                    );
+                    assertTrue(allRoutes.containsAll(validMap.get(args)));
+                }
+
+                // Q7
+                @Test
+                void should_return_all_routes_when_given_start_arrive_station_can_be_arrived_and_equals_steps() {
+                    // given
+                    String args = "AC";
+                    String start = args.substring(0, 1);
+                    String arrived = args.substring(1, 2);
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getSteps() == 4);
+                    System.out.println(args + " -> " + allRoutes);
+
+                    // then
+                    Map<String, List<String>> validMap = Map.of(
+                            "AC", List.of("ABCDC", "ADCDC", "ADEBC")
+                    );
+                    assertTrue(allRoutes.containsAll(validMap.get(args)));
+                }
             }
 
             @Nested
