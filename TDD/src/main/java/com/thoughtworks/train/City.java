@@ -171,7 +171,21 @@ public class City {
      * @return 最短距离
      */
     public String calculateShortestRoute(String start, String arrival, Integer limitDistance) {
-        return null;
+        List<String> allRoutes;
+        if (start.equals(arrival)) {
+            allRoutes = calculateRoutes(start, arrival, false, provider -> provider.getDistance() <= limitDistance);
+        } else {
+            allRoutes = calculateRoutes(start, arrival);
+        }
+        if (allRoutes.isEmpty()) {
+            return "NO SUCH ROUTE";
+        }
+        int minDistance = Integer.MAX_VALUE;
+        for (String route : allRoutes) {
+            String distance = calculateDistanceByRoute(route.toCharArray());
+            minDistance = Math.min(minDistance, Integer.parseInt(distance));
+        }
+        return String.valueOf(minDistance);
     }
 
 }
