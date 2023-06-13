@@ -3,6 +3,7 @@ package com.thoughtworks.train;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collections;
@@ -115,15 +116,21 @@ public class CityTest {
     }
 
     @Nested
-    class Part01{
+    class Part01 {
         @Nested
         class CalculateDistance {
             @Nested
             class HappyPath {
                 // Q1
                 @ParameterizedTest
-                @ValueSource(strings = {"AD", "BC", "CD", "DC", "EB"})
-                void should_return_route_distance_when_given_two_length_route_can_arrive(String route) {
+                @CsvSource({
+                        "AD, 5",
+                        "BC, 4",
+                        "CD, 8",
+                        "DC, 8",
+                        "EB, 3"
+                })
+                void should_return_route_distance_when_given_two_length_route_can_arrive(String route, String result) {
                     // given
                     City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
 
@@ -132,20 +139,17 @@ public class CityTest {
                     String distance = city.calculateDistanceByRoute(route.toCharArray());
 
                     // then
-                    Map<String, String> validMap = Map.of(
-                            "AD", "5",
-                            "BC", "4",
-                            "CD", "8",
-                            "DC", "8",
-                            "EB", "3"
-                    );
-                    validMap.forEach((key, value) -> assertEquals(validMap.get(route), distance));
+                    assertEquals(result, distance);
                 }
 
                 // Q1 Q3 Q4
                 @ParameterizedTest
-                @ValueSource(strings = {"ABC", "ADC", "AEBCD"})
-                void should_return_route_distance_when_given_more_than_2_length_route_can_arrive(String route) {
+                @CsvSource({
+                        "ABC, 9",
+                        "ADC, 13",
+                        "AEBCD, 22"
+                })
+                void should_return_route_distance_when_given_more_than_2_length_route_can_arrive(String route, String result) {
                     // given
                     City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
 
@@ -159,7 +163,7 @@ public class CityTest {
                             "ADC", "13",
                             "AEBCD", "22"
                     );
-                    validMap.forEach((key, value) -> assertEquals(validMap.get(route), distance));
+                    assertEquals(result, distance);
                 }
             }
 
@@ -337,8 +341,11 @@ public class CityTest {
             class HappyPath {
                 // Q8-9
                 @ParameterizedTest
-                @ValueSource(strings = {"AC", "BB"})
-                void should_return_shortest_distance_when_given_start_end_city_can_be_arrived(String args) {
+                @CsvSource({
+                        "AC, 9",
+                        "BB, 9"
+                })
+                void should_return_shortest_distance_when_given_start_end_city_can_be_arrived(String args, String result) {
                     // given
                     String start = args.substring(0, 1);
                     String arrived = args.substring(1, 2);
@@ -349,11 +356,7 @@ public class CityTest {
                     String shortestDistance = city.calculateShortestRoute(start, arrived, 30);
 
                     // then
-                    Map<String, String> validMap = Map.of(
-                            "AC", "9",
-                            "BB", "9"
-                    );
-                    assertEquals(validMap.get(args), shortestDistance);
+                    assertEquals(result, shortestDistance);
                 }
             }
 
