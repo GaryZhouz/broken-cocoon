@@ -53,23 +53,7 @@ public class City {
     }
 
     public String calculateDistanceByRoute(char... route) {
-        String noSuchRoute = "NO SUCH ROUTE";
-        City root = this;
-        Integer distance = 0;
-        for (char cityName : route) {
-            Optional<ArriveCity> needArriveCity = root.getCanArriveCities()
-                    .stream()
-                    .filter(arriveCity -> arriveCity.getCity()
-                            .getName()
-                            .contains(String.valueOf(cityName))
-                    ).findFirst();
-            if (needArriveCity.isEmpty()) {
-                return noSuchRoute;
-            }
-            distance += needArriveCity.get().getDistance();
-            root = needArriveCity.get().getCity();
-        }
-        return String.valueOf(distance);
+        return calculateByRoute(true, route);
     }
 
     public List<String> calculateRoutes(String start, String arrival) {
@@ -186,6 +170,35 @@ public class City {
             minDistance = Math.min(minDistance, Integer.parseInt(distance));
         }
         return String.valueOf(minDistance);
+    }
+
+    public String calculateDurationByRoute(char... route) {
+        return calculateByRoute(false, route);
+    }
+
+    public String calculateByRoute(boolean returnDistance, char... route) {
+        String noSuchRoute = "NO SUCH ROUTE";
+        City root = this;
+        int distance = 0;
+        int arrivedTimes = 0;
+        for (char cityName : route) {
+            Optional<ArriveCity> needArriveCity = root.getCanArriveCities()
+                    .stream()
+                    .filter(arriveCity -> arriveCity.getCity()
+                            .getName()
+                            .contains(String.valueOf(cityName))
+                    ).findFirst();
+            if (needArriveCity.isEmpty()) {
+                return noSuchRoute;
+            }
+            distance += needArriveCity.get().getDistance();
+            root = needArriveCity.get().getCity();
+            arrivedTimes++;
+        }
+        if (returnDistance) {
+            return String.valueOf(distance);
+        }
+        return String.valueOf(distance + Math.max((arrivedTimes - 2) * 2, 0));
     }
 
 }

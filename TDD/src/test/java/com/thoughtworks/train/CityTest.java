@@ -401,7 +401,7 @@ public class CityTest {
 
                     // when
                     assert city != null;
-                    String distance = city.calculateDistanceByRoute(route.toCharArray());
+                    String distance = city.calculateDurationByRoute(route.toCharArray());
 
                     // then
                     assertEquals(result, distance);
@@ -419,7 +419,7 @@ public class CityTest {
 
                     // when
                     assert city != null;
-                    String distance = city.calculateDistanceByRoute(route.toCharArray());
+                    String distance = city.calculateDurationByRoute(route.toCharArray());
 
                     // then
                     assertEquals("NO SUCH ROUTE", distance);
