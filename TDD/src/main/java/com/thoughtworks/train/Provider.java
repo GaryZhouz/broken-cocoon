@@ -11,4 +11,9 @@ public class Provider {
 
     private Integer steps;
 
+    private Integer duration;
+
+    public Integer getDuration() {
+        return distance + (steps - 2) * 2;
+    }
 }
