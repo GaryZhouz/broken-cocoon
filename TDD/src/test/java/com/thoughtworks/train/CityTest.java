@@ -488,5 +488,30 @@ public class CityTest {
                 }
             }
         }
+
+        @Nested
+        class CalculateShortestRouteDuration {
+            @Nested
+            class HappyPath {
+                @ParameterizedTest
+                @CsvSource({
+                        "AC, 11",
+                        "BB, 13"
+                })
+                void should_return_the_shortest_route_when_given_start_end_city(String args, String result) {
+                    // given
+                    String start = args.substring(0, 1);
+                    String arrived = args.substring(1, 2);
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    String minDuration = city.calculateShortest(start, arrived, 100);
+
+                    // then
+                    assertEquals(result, minDuration);
+                }
+            }
+        }
     }
 }
