@@ -380,4 +380,51 @@ public class CityTest {
             }
         }
     }
+
+    @Nested
+    class Part02 {
+        @Nested
+        class CalculateDuration {
+            @Nested
+            class HappyPath {
+                // Q1-Q4
+                @ParameterizedTest
+                @CsvSource({
+                        "ABC, 11",
+                        "AD, 5",
+                        "ADC, 15",
+                        "AEBCD, 28"
+                })
+                void should_return_route_duration_when_given_route_can_arrive(String route, String result) {
+                    // given
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    String distance = city.calculateDistanceByRoute(route.toCharArray());
+
+                    // then
+                    assertEquals(result, distance);
+                }
+            }
+
+            @Nested
+            class SadPath {
+                // Q5
+                @ParameterizedTest
+                @ValueSource(strings = {"AC", "AED", "BDCD"})
+                void should_return_route_duration_when_given_route_can_arrive(String route) {
+                    // given
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    String distance = city.calculateDistanceByRoute(route.toCharArray());
+
+                    // then
+                    assertEquals("NO SUCH ROUTE", distance);
+                }
+            }
+        }
+    }
 }
