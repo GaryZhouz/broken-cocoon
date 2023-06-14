@@ -201,4 +201,22 @@ public class City {
         return String.valueOf(distance + Math.max((arrivedTimes - 2) * 2, 0));
     }
 
+    public String calculateShortest(String start, String arrival, Integer limitDuration) {
+        List<String> allRoutes;
+        if (start.equals(arrival)) {
+            allRoutes = calculateRoutes(start, arrival, false, provider -> provider.getDuration() <= limitDuration);
+        } else {
+            allRoutes = calculateRoutes(start, arrival);
+        }
+        if (allRoutes.isEmpty()) {
+            return "NO SUCH ROUTE";
+        }
+        int minDuration = Integer.MAX_VALUE;
+        for (String route : allRoutes) {
+            String duration = calculateDurationByRoute(route.toCharArray());
+            minDuration = Math.min(minDuration, Integer.parseInt(duration));
+        }
+        return String.valueOf(minDuration);
+    }
+
 }
