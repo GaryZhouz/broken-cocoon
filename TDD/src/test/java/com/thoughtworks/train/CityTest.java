@@ -426,5 +426,67 @@ public class CityTest {
                 }
             }
         }
+
+        @Nested
+        class CalculateRoutes {
+            @Nested
+            class HappyPath {
+                // Q6
+                @Test
+                void should_return_all_routes_when_duration_shortest_limited_30() {
+                    // given
+                    String args = "CC";
+                    String start = args.substring(0, 1);
+                    String arrived = args.substring(1, 2);
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getDuration() <= 30);
+                    System.out.println(args + " -> " + allRoutes);
+
+                    // then
+                    List<String> expectRoutes = List.of("CDC", "CEBC", "CDEBC", "CEBCEBC");
+                    assertTrue(allRoutes.containsAll(expectRoutes));
+                }
+
+                // Q10
+                @Test
+                void should_return_all_routes_when_duration_shortest_limited_35() {
+                    // given
+                    String args = "CC";
+                    String start = args.substring(0, 1);
+                    String arrived = args.substring(1, 2);
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getDuration() < 35);
+                    System.out.println(args + " -> " + allRoutes);
+
+                    // then
+                    List<String> expectRoutes = List.of("CDC", "CEBC", "CEBCDC", "CDCEBC", "CDEBC", "CEBCEBC");
+                    assertTrue(allRoutes.containsAll(expectRoutes));
+                }
+
+                @Test
+                void should_return_all_routes_when_duration_shortest_exactly_30() {
+                    // given
+                    String args = "AC";
+                    String start = args.substring(0, 1);
+                    String arrived = args.substring(1, 2);
+                    City city = City.generate(List.of("AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"));
+
+                    // when
+                    assert city != null;
+                    List<String> allRoutes = city.calculateRoutes(start, arrived, false, provider -> provider.getDuration() <= 30);
+                    System.out.println(args + " -> " + allRoutes);
+
+                    // then
+                    List<String> expectRoutes = List.of("ADCEBC");
+                    assertTrue(allRoutes.containsAll(expectRoutes));
+                }
+            }
+        }
     }
 }
