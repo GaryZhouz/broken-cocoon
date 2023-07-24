@@ -18,14 +18,17 @@ const Register: React.FC = () => {
   const [loadingAreaData, setLoadingAreaData] = useState<boolean>(true);
   const [cities, setCities] = useState<City[]>([]);
   useEffect(() => {
-    api.getCities().then((resp: Response<City[]>) => {
-      setLoadingAreaData((_: boolean) => false);
-      setCities((prev: City[]) => {
-        prev.splice(0, prev.length);
-        prev.push(...resp.data);
-        return prev;
-      });
-    });
+    api
+      .getCities()
+      .then((resp: Response<City[]>) => {
+        setCities((prev: City[]) => {
+          prev.splice(0, prev.length);
+          prev.push(...resp.data);
+          return prev;
+        });
+        setLoadingAreaData((_: boolean) => false);
+      })
+      .finally(() => setLoadingAreaData((_: boolean) => false));
   }, []);
 
   const filterArea = (inputValue: string, path: DefaultOptionType[]) =>
