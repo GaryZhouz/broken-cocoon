@@ -1,4 +1,4 @@
-import '../assets/style/Register.scss';
+import '../styles/Register.scss';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Cascader, Form, Input, message, notification } from 'antd';
 import api from '../api/Api.ts';

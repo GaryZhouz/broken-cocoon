@@ -1,0 +1,73 @@
+.product-item-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+
+.product-banner {
+  height: 80%;
+  width: 100%;
+  background-color: white;
+
+  .banner {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.4rem 0.4rem 0 0;
+  }
+}
+
+.product-desc {
+  width: 100%;
+  height: 20%;
+  background-color: white;
+  border-radius: 0 0 0.4rem 0.4rem;
+
+  .title {
+    color: #333;
+    font-weight: normal;
+    font-size: 14px;
+    margin: 0;
+    padding: 0 0.3rem 0 0.3rem;
+  }
+
+  .description {
+    color: #7f7f7f;
+    font-weight: normal;
+    font-size: 12px;
+    margin: 0;
+    padding: 0 0.3rem 0 0.3rem;
+  }
+
+  .price-with-add-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 5px;
+
+    .price {
+      color: #FF2828;
+      padding-left: 0.3rem;
+
+      .price-unit {
+        font-size: 12px;
+      }
+
+      .price-value {
+        font-weight: bold;
+        margin-left: 1px;
+      }
+    }
+
+    .add-btn {
+      margin-right: 5px;
+      color: white;
+      background: #fe6102;
+    }
+
+    .ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+      color: white;
+      border-color: #fe6102;
+    }
+  }
+}

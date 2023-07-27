@@ -1,0 +1,51 @@
+.app-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+
+  .content {
+    width: 100%;
+    height: calc(100% - 50px);
+    overflow: scroll;
+  }
+
+  .footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: white;
+
+    .footer-btn-group {
+      cursor: pointer;
+      padding: 3px;
+      font-size: 32px;
+      font-weight: 100;
+      border-radius: 50%;
+      color: gainsboro;
+    }
+  }
+}
+
+.active-btn {
+  background: #fe6102;
+  color: white !important;
+}
+
+.global-loading {
+  width: 100%;
+  height: 100%;
+
+  > div {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+:where(.css-dev-only-do-not-override-14wwjjs).ant-spin-nested-loading > div > .ant-spin {
+  max-height: 100%;
+}
