@@ -1,6 +1,6 @@
 import '../styles/shop/product-item.scss';
 import React, { memo } from 'react';
-import { Button } from 'antd';
+import { Button, Image, Skeleton } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 export interface ProductItemProps {
@@ -13,11 +13,17 @@ export interface ProductItemProps {
 }
 
 const ProductItem: React.FC<ProductItemProps> = memo((props: ProductItemProps) => {
-  const addCartCallback = props.addCartCallback;
+  const addCartCallback = props.addCartCallback ?? (() => {});
   return (
     <div className="product-item-box">
       <div className="product-banner">
-        <img className="banner" src={props.banner} alt="商品图片" />
+        <Image
+          className="banner"
+          src={props.banner}
+          preview={false}
+          alt="商品图片"
+          placeholder={<Skeleton.Image style={{ width: '100%', height: '100%' }} active />}
+        />
       </div>
 
       <div className="product-desc">

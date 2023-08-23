@@ -3,6 +3,7 @@ import NotFoundPage from '../pages/404/index.tsx';
 import Register from '../pages/Register.tsx';
 import Layout from '../pages/shop/Layout.tsx';
 import Shop from '../pages/shop/Shop.tsx';
+import Cart from '../pages/shop/Cart.tsx';
 
 const router = createBrowserRouter([
   // {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: '/shop',
         element: <Shop />,
+      },
+      {
+        path: '/cart',
+        element: <Cart />,
       },
     ],
   },

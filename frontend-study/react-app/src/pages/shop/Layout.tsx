@@ -9,13 +9,17 @@ import { useRecoilValue } from 'recoil';
 const Layout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [selectedButtonIndex, setSelectedButtonIndex] = useState<number>(-1);
   useEffect(() => {
     if (location.pathname === '/') {
       navigate('/shop');
+    } else if (location.pathname === '/shop') {
+      setSelectedButtonIndex(0);
+    } else if (location.pathname === '/cart') {
+      setSelectedButtonIndex(1);
     }
   }, [location.pathname, navigate]);
 
-  const [selectedButtonIndex, setSelectedButtonIndex] = useState<number>(0);
   const getFooterButtonClassname = (index: number): string => {
     if (index === selectedButtonIndex) {
       return 'footer-btn-group active-btn';

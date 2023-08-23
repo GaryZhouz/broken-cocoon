@@ -39,11 +39,17 @@ export default {
       data: body,
     });
   },
-  updateCart(body: CartProduct): Promise<CartProduct> {
+  updateCartProductQuantity(body: CartProduct): Promise<CartProduct> {
     return service({
       url: 'cart-products/' + body.id,
       method: 'PATCH',
       data: body,
+    });
+  },
+  deleteCartProductItem(cartId: number): Promise<void> {
+    return service({
+      url: 'cart-products/' + cartId,
+      method: 'DELETE',
     });
   },
 };
