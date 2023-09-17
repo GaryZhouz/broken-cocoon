@@ -1,0 +1,95 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+left to right direction
+
+package "address" {
+    entity ShoppingAddress #pink {
+        id: String
+        addressValue: AddressValue
+    }
+
+    class AddressValue #green {
+       address: String
+       fullName: String
+       phoneNumber: String;
+    }
+
+    ShoppingAddress -- AddressValue
+}
+
+package "commodity" {
+    entity Commodity #pink {
+        sku: int
+        title: String
+        description: String
+        amount: BigDecimal
+        Images: List<Image>
+    }
+
+    class Image #green {
+        url: String
+        alternateText: String
+    }
+
+    Commodity -- Image
+}
+
+package "order" {
+    entity Order #pink {
+        orderId: int
+        quantity: int
+        totalPrice: BigDecimal
+        orderStatus: OrderStatus
+        sku: int
+        buyerId: int
+        createAt: Date
+        addressDescription: AddressValue
+    }
+
+    enum OrderStatus {
+        NOT_PAID
+        PAY_SUCCESS
+    }
+
+    interface OrderCommodity #orange{
+        Commodity getOrderCommodity()
+    }
+
+    Order  --o OrderStatus
+    Order "1" -- "1" OrderCommodity
+    OrderCommodity "1" -- "1" Commodity
+    Order --o AddressValue
+}
+
+package "customer" {
+    interface Customers #orange{
+        List<Customer> getCustomers()
+        Boolean checkUserExistByUserId(int customerId)
+    }
+
+    interface CustomerOrders #orange {
+        List<Order> getCustomerOrders()
+
+        Order createOrder(Order order);
+    }
+
+    interface CustomerShoppingAddress #orange {
+        List<ShoppingAddress> getCustomerShoppingAddress();
+        ShoppingAddress addShoppingAddress(ShoppingAddress address);
+    }
+
+    entity Customer #pink{
+        customerId: String
+        addresses: List<ShoppingAddress>
+        orders: List<Order>
+    }
+
+    Customers "1" -- "N" Customer
+    Customer "1" -- "1" CustomerOrders
+    CustomerOrders "1" -- "N" Order
+    Customer "1" -- "1" CustomerShoppingAddress
+    CustomerShoppingAddress "1" -- "n" ShoppingAddress
+}
+
+@enduml

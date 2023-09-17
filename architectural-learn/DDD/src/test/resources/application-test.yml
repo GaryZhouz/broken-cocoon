@@ -1,0 +1,10 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: shop-backend
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  flyway:
+    enabled: false
