@@ -61,7 +61,28 @@
       "price": 1000
     }
   ],
-  "cart-products": [],
+  "cart-products": [
+    {
+      "productId": 1,
+      "quantity": 1,
+      "id": 1
+    },
+    {
+      "productId": 6,
+      "quantity": 1,
+      "id": 2
+    },
+    {
+      "productId": 2,
+      "quantity": 1,
+      "id": 3
+    },
+    {
+      "productId": 7,
+      "quantity": 1,
+      "id": 4
+    }
+  ],
   "profile": {
     "name": "法外狂徒张三",
     "phone": "123456789"

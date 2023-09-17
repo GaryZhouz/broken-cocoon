@@ -36,7 +36,7 @@ const Layout: React.FC = () => {
           <Outlet />
         </div>
         <div className="footer">
-          <Link to={'/shop'} onClick={() => setSelectedButtonIndex(0)}>
+          <Link to={'/shop'} data-testId="data-id-1" onClick={() => setSelectedButtonIndex(0)}>
             <RocketOutlined className={getFooterButtonClassname(0)} />
           </Link>
           <Link to={'/cart'} onClick={() => setSelectedButtonIndex(1)}>
