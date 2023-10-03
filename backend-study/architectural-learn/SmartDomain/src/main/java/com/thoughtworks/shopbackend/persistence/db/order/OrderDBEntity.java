@@ -42,7 +42,6 @@ public class OrderDBEntity {
                 .sku(order.getSku())
                 .buyerId(order.getBuyerId())
                 .createAt(new Date())
-                .address(order.getAddress())
                 .build();
     }
 
