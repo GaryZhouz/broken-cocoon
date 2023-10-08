@@ -1,4 +1,4 @@
-package com.thoughtworks.backend.common.log;
+package com.thoughtworks.backend.common.logging;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
