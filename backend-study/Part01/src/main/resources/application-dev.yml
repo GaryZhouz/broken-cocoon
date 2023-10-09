@@ -9,7 +9,7 @@ spring:
   datasource:
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:root}
-    url: jdbc:mysql://${MYSQL_HOST:localhost}/shop?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://${MYSQL_HOST:localhost}/part1?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
@@ -18,7 +18,7 @@ spring:
     out-of-order: true
     encoding: UTF-8
     url: jdbc:mysql://${MYSQL_HOST:localhost}
-    schemas: shop
+    schemas: part1
     user: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:root}
     locations: classpath:db/migration

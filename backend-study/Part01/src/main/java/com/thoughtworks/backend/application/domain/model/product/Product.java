@@ -1,4 +1,4 @@
-package com.thoughtworks.backend.application.domain.product;
+package com.thoughtworks.backend.application.domain.model.product;
 
 import lombok.Builder;
 import lombok.Data;

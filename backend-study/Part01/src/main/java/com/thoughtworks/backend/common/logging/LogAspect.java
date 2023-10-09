@@ -27,7 +27,7 @@ public class LogAspect {
 
     private final ObjectMapper objectMapper;
 
-    @Pointcut("execution(public * com.thoughtworks.controller..*(..))")
+    @Pointcut("execution(public * com.thoughtworks.backend.adapter.in.web.*.*(..))")
     public void logCutPoint() {
     }
 

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@MapperScan("com.thoughtworks.backend")
+@MapperScan("com.thoughtworks.backend.adapter.out.persistence.mapper")
 public class MybatisPlusConfiguration {
 
     @Bean

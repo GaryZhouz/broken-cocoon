@@ -23,7 +23,6 @@ public enum CommonErrorCode implements ErrorCode {
         this.desc = desc;
     }
 
-
     public static CommonErrorCode setErrorCode(int code) {
         for (CommonErrorCode errorCode : CommonErrorCode.values()) {
             if (errorCode.getCode() == code) {
