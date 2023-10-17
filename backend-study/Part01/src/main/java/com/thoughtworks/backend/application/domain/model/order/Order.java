@@ -1,13 +1,15 @@
 package com.thoughtworks.backend.application.domain.model.order;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class Order {
 
     private Long id;
@@ -18,7 +20,7 @@ public class Order {
 
     private OrderStatus status;
 
-    private LocalDate createTime;
+    private LocalDateTime createTime;
 
     private String createBy;
 

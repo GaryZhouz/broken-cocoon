@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
     public RestErrorResponse handle(MethodArgumentNotValidException ex) {
         String field = Objects.requireNonNull(ex.getBindingResult().getFieldError()).getField();
         String message = ex.getBindingResult().getFieldError().getDefaultMessage();
-        return new RestErrorResponse(HttpStatus.BAD_REQUEST.value(), field + message);
+        return new RestErrorResponse(HttpStatus.BAD_REQUEST.value(), field + ": " + message);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
