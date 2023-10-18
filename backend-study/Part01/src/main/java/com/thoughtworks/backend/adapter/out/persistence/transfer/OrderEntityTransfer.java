@@ -5,7 +5,6 @@ import com.thoughtworks.backend.adapter.out.persistence.entity.OrderProductEntit
 import com.thoughtworks.backend.application.domain.model.order.Order;
 import com.thoughtworks.backend.application.port.in.CreateOrderCommand;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class OrderEntityTransfer {
 
     public static OrderEntity fromCreateOrderCommand(CreateOrderCommand createOrderCommand) {
         return OrderEntity.builder()
-                .totalPrice(createOrderCommand.getTotalPrice())
+                .totalPrice(createOrderCommand.totalPrice())
                 .receivingAddress(createOrderCommand.receivingAddress())
                 .receivingNumber(createOrderCommand.receivingNumber())
                 .createBy(createOrderCommand.customerId())
