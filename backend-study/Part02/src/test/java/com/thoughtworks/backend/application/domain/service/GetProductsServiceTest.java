@@ -43,8 +43,8 @@ public class GetProductsServiceTest {
     @Test
     public void should_return_products_when_exist_products() {
         List<Product> products = List.of(
-                new Product("1", "iPhone 12", "5999", Product.ProductStatus.VALID),
-                new Product("2", "Mac Book Pro 2019", "10999", Product.ProductStatus.INVALID)
+                new Product("1", "iPhone 12", "5999", "5999", Product.ProductStatus.VALID),
+                new Product("2", "Mac Book Pro 2019", "10999", "3749.25", Product.ProductStatus.INVALID)
         );
 
         when(loadProductsPort.loadProducts()).thenReturn(products);

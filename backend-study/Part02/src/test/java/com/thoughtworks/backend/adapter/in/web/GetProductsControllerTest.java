@@ -42,8 +42,8 @@ public class GetProductsControllerTest {
     @Test
     public void should_return_products_when_exist_products() throws Exception {
         List<Product> products = List.of(
-                new Product("1", "iPhone 12", "5999", Product.ProductStatus.VALID),
-                new Product("2", "Mac Book Pro 2019", "10999", Product.ProductStatus.INVALID)
+                new Product("1", "iPhone 12", "5999", "5999", Product.ProductStatus.VALID),
+                new Product("2", "Mac Book Pro 2019", "10999", "3749.25", Product.ProductStatus.INVALID)
         );
 
         when(getProductsUseCase.getProducts()).thenReturn(products);
@@ -53,6 +53,7 @@ public class GetProductsControllerTest {
                 .andExpect(jsonPath("$.data[*].id", contains("1", "2")))
                 .andExpect(jsonPath("$.data[*].name", contains("iPhone 12", "Mac Book Pro 2019")))
                 .andExpect(jsonPath("$.data[*].price", contains("5999", "10999")))
+                .andExpect(jsonPath("$.data[*].discountPrice", contains("5999", "3749.25")))
                 .andExpect(jsonPath("$.data[*].status", contains("VALID", "INVALID")));
 
         verify(getProductsUseCase).getProducts();
