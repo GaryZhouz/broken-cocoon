@@ -22,8 +22,10 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
-
-*.gradle
+**/.gradle/**
+**/.mvn/**
+**/mvnw
+**/mvnw.cmd
 *build/
 *!**/src/main/**/build/
 *!**/src/test/**/build/
@@ -33,7 +35,7 @@ replay_pid*
 *.iws
 *.iml
 *.ipr
-*out/
+*/out/
 *!**/src/main/**/out/
 *!**/src/test/**/out/
 

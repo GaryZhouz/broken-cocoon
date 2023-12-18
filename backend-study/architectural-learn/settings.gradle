@@ -1,0 +1,5 @@
+rootProject.name = 'architectural-learn'
+
+include 'MVC'
+include 'DDD'
+include 'SmartDomain'
