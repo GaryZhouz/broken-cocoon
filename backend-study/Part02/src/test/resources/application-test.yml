@@ -1,6 +1,6 @@
 spring:
   application:
-    name: backend
+    name: backend-part02
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss

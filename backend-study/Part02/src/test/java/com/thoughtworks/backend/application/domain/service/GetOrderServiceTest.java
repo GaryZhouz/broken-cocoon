@@ -33,10 +33,10 @@ public class GetOrderServiceTest {
     @Test
     public void should_return_orders() {
         List<OrderProduct> orderProducts = List.of(
-                new OrderProduct("1", "iPhone 12", 1, "5999"),
-                new OrderProduct("1", "Mac Book Pro 2019", 1, "10999")
+                new OrderProduct("1", "iPhone 12", 1, "5999", "5999"),
+                new OrderProduct("1", "Mac Book Pro 2019", 1, "10999", "8249.25")
         );
-        Order order = new Order(1L, orderProducts, "16998", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
+        Order order = new Order(1L, orderProducts, "16998", "14248.25", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
 
         when(getOrderPort.getOrders("1")).thenReturn(List.of(order));
 
@@ -52,10 +52,10 @@ public class GetOrderServiceTest {
     @Test
     public void should_return_order_by_order_id() {
         List<OrderProduct> orderProducts = List.of(
-                new OrderProduct("1", "iPhone 12", 1, "5999"),
-                new OrderProduct("1", "Mac Book Pro 2019", 1, "10999")
+                new OrderProduct("1", "iPhone 12", 1, "5999", "5999"),
+                new OrderProduct("1", "Mac Book Pro 2019", 1, "10999", "8249.25")
         );
-        Order order = new Order(1L, orderProducts, "16998", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
+        Order order = new Order(1L, orderProducts, "16998", "14248.25", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
 
         when(getOrderPort.getOrder(1L)).thenReturn(order);
 

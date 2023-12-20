@@ -1,10 +1,10 @@
 package com.thoughtworks.backend.adapter.in.web;
 
-import com.thoughtworks.backend.JUnitWebAppTest;
 import com.thoughtworks.backend.application.domain.model.product.Product;
 import com.thoughtworks.backend.application.port.in.GetProductsUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@JUnitWebAppTest
+@WebMvcTest(GetProductsController.class)
 public class GetProductsControllerTest {
 
     @Autowired
@@ -42,8 +42,8 @@ public class GetProductsControllerTest {
     @Test
     public void should_return_products_when_exist_products() throws Exception {
         List<Product> products = List.of(
-                new Product("1", "iPhone 12", "5999", "5999", Product.ProductStatus.VALID),
-                new Product("2", "Mac Book Pro 2019", "10999", "3749.25", Product.ProductStatus.INVALID)
+                new Product("1", "iPhone 12", "5999", "5999", 1D, Product.ProductStatus.VALID),
+                new Product("2", "Mac Book Pro 2019", "10999", "8249.25", 0.75D, Product.ProductStatus.INVALID)
         );
 
         when(getProductsUseCase.getProducts()).thenReturn(products);
@@ -53,7 +53,7 @@ public class GetProductsControllerTest {
                 .andExpect(jsonPath("$.data[*].id", contains("1", "2")))
                 .andExpect(jsonPath("$.data[*].name", contains("iPhone 12", "Mac Book Pro 2019")))
                 .andExpect(jsonPath("$.data[*].price", contains("5999", "10999")))
-                .andExpect(jsonPath("$.data[*].discountPrice", contains("5999", "3749.25")))
+                .andExpect(jsonPath("$.data[*].discountPrice", contains("5999", "8249.25")))
                 .andExpect(jsonPath("$.data[*].status", contains("VALID", "INVALID")));
 
         verify(getProductsUseCase).getProducts();

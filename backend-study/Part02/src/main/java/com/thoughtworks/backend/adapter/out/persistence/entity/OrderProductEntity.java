@@ -27,6 +27,8 @@ public class OrderProductEntity {
 
     private String productPrice;
 
+    private String productDiscountPrice;
+
     private Integer quantity;
 
 }

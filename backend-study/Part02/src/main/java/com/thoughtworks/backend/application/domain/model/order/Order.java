@@ -18,6 +18,8 @@ public class Order {
 
     private String totalPrice;
 
+    private String totalDiscountPrice;
+
     private OrderStatus status;
 
     private LocalDateTime createTime;

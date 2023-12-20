@@ -24,14 +24,25 @@ public record CreateOrderCommand(
         }
         return String.valueOf(this.products()
                 .stream()
-                .mapToDouble(product -> Integer.parseInt(Optional.of(product.price()).orElse("0")))
+                .mapToDouble(product -> Double.parseDouble(Optional.of(product.price()).orElse("0")))
+                .sum());
+    }
+
+    public String totalDiscountPrice() {
+        if (CollectionUtils.isEmpty(this.products)) {
+            return "0";
+        }
+        return String.valueOf(this.products()
+                .stream()
+                .mapToDouble(product -> Double.parseDouble(Optional.of(product.discountPrice()).orElse(product.price())))
                 .sum());
     }
 
     public record CreateOrderProduct(@NotBlank String id,
                                      @NotBlank String name,
                                      @Min(1) @NotNull Integer quantity,
-                                     @NotBlank String price) {
+                                     @NotBlank String price,
+                                     @NotBlank String discountPrice) {
 
     }
 

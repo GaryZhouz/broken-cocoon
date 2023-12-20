@@ -13,6 +13,7 @@ public class OrderEntityTransfer {
     public static OrderEntity fromCreateOrderCommand(CreateOrderCommand createOrderCommand) {
         return OrderEntity.builder()
                 .totalPrice(createOrderCommand.totalPrice())
+                .totalDiscountPrice(createOrderCommand.totalDiscountPrice())
                 .receivingAddress(createOrderCommand.receivingAddress())
                 .receivingNumber(createOrderCommand.receivingNumber())
                 .createBy(createOrderCommand.customerId())
@@ -27,6 +28,7 @@ public class OrderEntityTransfer {
                         .map(OrderProductEntityTransfer::toOrderProductDomain)
                         .toList())
                 .totalPrice(orderEntity.getTotalPrice())
+                .totalDiscountPrice(orderEntity.getTotalDiscountPrice())
                 .status(orderEntity.getStatus())
                 .createTime(orderEntity.getCreateTime())
                 .createBy(orderEntity.getCreateBy())

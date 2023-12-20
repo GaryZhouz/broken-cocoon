@@ -17,4 +17,6 @@ public class OrderProduct {
 
     private String price;
 
+    private String discountPrice;
+
 }

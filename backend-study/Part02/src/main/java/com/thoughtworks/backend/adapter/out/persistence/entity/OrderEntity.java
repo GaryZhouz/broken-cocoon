@@ -23,6 +23,8 @@ public class OrderEntity {
 
     private String totalPrice;
 
+    private String totalDiscountPrice;
+
     @Builder.Default
     private Order.OrderStatus status = Order.OrderStatus.CREATED;
 

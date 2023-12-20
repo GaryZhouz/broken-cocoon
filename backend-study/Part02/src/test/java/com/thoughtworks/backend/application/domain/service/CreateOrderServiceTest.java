@@ -34,16 +34,16 @@ public class CreateOrderServiceTest {
     @Test
     public void should_create_order_success() {
         List<CreateOrderCommand.CreateOrderProduct> createOrderProducts = List.of(
-                new CreateOrderCommand.CreateOrderProduct("1", "iPhone 12", 1, "5999"),
-                new CreateOrderCommand.CreateOrderProduct("1", "Mac Book Pro 2019", 1, "10999")
+                new CreateOrderCommand.CreateOrderProduct("1", "iPhone 12", 1, "5999", "5999"),
+                new CreateOrderCommand.CreateOrderProduct("1", "Mac Book Pro 2019", 1, "10999", "8249.25")
         );
         List<OrderProduct> orderProducts = createOrderProducts.stream()
-                .map(createOrderProduct -> new OrderProduct(createOrderProduct.id(), createOrderProduct.name(), createOrderProduct.quantity(), createOrderProduct.price()))
+                .map(createOrderProduct -> new OrderProduct(createOrderProduct.id(), createOrderProduct.name(), createOrderProduct.quantity(), createOrderProduct.price(), createOrderProduct.discountPrice()))
                 .toList();
         CreateOrderCommand createOrderCommand = new CreateOrderCommand(
                 createOrderProducts, "customer-01", "地球", "15566666666"
         );
-        Order order = new Order(1L, orderProducts, "16998", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
+        Order order = new Order(1L, orderProducts, "16998", "14248.25", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
 
         when(createOrderPort.createOrder(createOrderCommand)).thenReturn(order);
 

@@ -17,6 +17,7 @@ public class OrderProductEntityTransfer {
                         .productId(createOrderProduct.id())
                         .productName(createOrderProduct.name())
                         .productPrice(createOrderProduct.price())
+                        .productDiscountPrice(createOrderProduct.discountPrice())
                         .quantity(createOrderProduct.quantity())
                         .build()).toList();
     }
@@ -27,6 +28,7 @@ public class OrderProductEntityTransfer {
                 .name(orderProductEntity.getProductName())
                 .price(orderProductEntity.getProductPrice())
                 .quantity(orderProductEntity.getQuantity())
+                .discountPrice(orderProductEntity.getProductDiscountPrice())
                 .build();
     }
 }

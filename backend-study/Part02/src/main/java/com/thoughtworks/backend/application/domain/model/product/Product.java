@@ -17,6 +17,8 @@ public class Product {
 
     private String discountPrice;
 
+    private Double discount;
+
     private ProductStatus status;
 
     public enum ProductStatus {

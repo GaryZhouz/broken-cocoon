@@ -42,16 +42,16 @@ public class OrderPersistenceAdapterTest {
     @Test
     public void should_create_order_success() {
         List<CreateOrderCommand.CreateOrderProduct> createOrderProducts = List.of(
-                new CreateOrderCommand.CreateOrderProduct("1", "iPhone 12", 1, "5999"),
-                new CreateOrderCommand.CreateOrderProduct("1", "Mac Book Pro 2019", 1, "10999")
+                new CreateOrderCommand.CreateOrderProduct("1", "iPhone 12", 1, "5999", "5999"),
+                new CreateOrderCommand.CreateOrderProduct("1", "Mac Book Pro 2019", 1, "10999", "8249.25")
         );
         List<OrderProduct> orderProducts = createOrderProducts.stream()
-                .map(createOrderProduct -> new OrderProduct(createOrderProduct.id(), createOrderProduct.name(), createOrderProduct.quantity(), createOrderProduct.price()))
+                .map(createOrderProduct -> new OrderProduct(createOrderProduct.id(), createOrderProduct.name(), createOrderProduct.quantity(), createOrderProduct.price(), createOrderProduct.discountPrice()))
                 .toList();
         CreateOrderCommand createOrderCommand = new CreateOrderCommand(
                 createOrderProducts, "customer-01", "地球", "15566666666"
         );
-        Order order = new Order(1L, orderProducts, "16998.0", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
+        Order order = new Order(1L, orderProducts, "16998.0", "14248.25", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
 
         when(orderMapper.insert(any())).thenReturn(1);
         when(orderProductMapper.insertBatchSomeColumn(any())).thenReturn(1);
@@ -60,6 +60,7 @@ public class OrderPersistenceAdapterTest {
 
         assertEquals(result.getCreateBy(), order.getCreateBy());
         assertEquals(result.getTotalPrice(), order.getTotalPrice());
+        assertEquals(result.getTotalDiscountPrice(), order.getTotalDiscountPrice());
         assertEquals(result.getStatus(), order.getStatus());
 
         verify(orderMapper).insert(any());
@@ -69,10 +70,10 @@ public class OrderPersistenceAdapterTest {
     @Test
     public void should_return_orders() {
         List<OrderProductEntity> orderProducts = List.of(
-                new OrderProductEntity(1L, 1L, "1", "iPhone 12", "5999", 1),
-                new OrderProductEntity(1L, 1L, "1", "Mac Book Pro 2019", "10999", 1)
+                new OrderProductEntity(1L, 1L, "1", "iPhone 12", "5999", "5999", 1),
+                new OrderProductEntity(1L, 1L, "1", "Mac Book Pro 2019", "10999", "8249.25", 1)
         );
-        OrderEntity orderEntity = new OrderEntity(1L, "16998", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
+        OrderEntity orderEntity = new OrderEntity(1L, "16998", "14248.25", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
 
         when(orderMapper.selectList(any())).thenReturn(List.of(orderEntity));
         when(orderProductMapper.selectList(any())).thenReturn(orderProducts);
@@ -89,7 +90,7 @@ public class OrderPersistenceAdapterTest {
 
     @Test
     public void should_return_order_by_order_id() {
-        OrderEntity orderEntity = new OrderEntity(1L, "16998", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
+        OrderEntity orderEntity = new OrderEntity(1L, "16998", "14248.25", Order.OrderStatus.CREATED, LocalDateTime.now(), "customer-01", "地球", "15566666666");
 
         when(orderMapper.selectById(any())).thenReturn(orderEntity);
 

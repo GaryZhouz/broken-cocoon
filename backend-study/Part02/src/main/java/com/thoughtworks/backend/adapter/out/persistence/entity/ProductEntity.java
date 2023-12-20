@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Data
 @Builder
@@ -42,6 +43,7 @@ public class ProductEntity {
                 .price(this.price)
                 .status(this.status)
                 .discountPrice(this.getDiscountPrice())
+                .discount(this.discount)
                 .build();
     }
 
@@ -50,6 +52,7 @@ public class ProductEntity {
                 .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
+                .discount(product.getDiscount())
                 .status(product.getStatus())
                 .build();
     }
